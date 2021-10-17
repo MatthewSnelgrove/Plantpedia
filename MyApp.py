@@ -26,6 +26,8 @@ my_coll = []
 my_collection = None
 curr_plant = "daisy"
 
+IMAGE_RES = 224
+
 class MyCollection(BoxLayout):
 
     def __init__(self, **kwargs):
