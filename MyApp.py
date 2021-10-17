@@ -1,21 +1,26 @@
 from kivy.app import App
 from kivy.core import text
 from kivy.lang import Builder
-from kivy.uix.relativelayout import RelativeLayout
+from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.widget import Widget
 from kivy.uix.button import Button
 from kivy.uix.image import Image
 from kivy.uix.label import Label
+from kivy.uix.camera import Camera
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.properties import ObjectProperty
+from kivy.core.window import Window
+import cv2
+from datetime import time
+
 import pandas as pd
 
 df = pd.read_csv('plant_info.csv')
 
 my_coll = []
 my_collection = None
-
+curr_plant = "daisy"
 
 class MyCollection(BoxLayout):
 
@@ -59,12 +64,27 @@ class CollectionWindow(Screen):
 
 
 class NewPlantWindow(Screen):
-    pass
+    def __init__(self, **kwargs):
+        super(NewPlantWindow, self).__init__(**kwargs)
+    
+
 
 class WindowManager(ScreenManager):
     pass
                 
 
+class CamWin(Screen):
+    def __init__(self, **kwargs):
+        super(CamWin, self).__init__(**kwargs)
+    
+    def activate_camera(self):
+        self.add_widget(CamClick())
+    
+
+class CamClick(BoxLayout):
+    def picture_taken(self):
+        #replace with correct plant
+        curr_plant = "daisy"
 
 
 
@@ -111,15 +131,13 @@ kv = Builder.load_file("my.kv")
 class MyApp(App):
     def build(self):
         return kv
-    def add_to_collection(self, plant: str):
+    def add_to_collection(self):
         if not df.index.name == "common name":
             df.set_index("common name", inplace=True)
-        row = df.loc[plant]
-        kwargs = {"common_name":plant, "sci_name":row[0], "info":row[1], "water":row[2]}
+        row = df.loc[curr_plant]
+        kwargs = {"common_name":curr_plant, "sci_name":row[0], "info":row[1], "water":row[2]}
         new_plant = Plant(**kwargs)
         my_coll.append(new_plant)
-
-        
 
 
 
