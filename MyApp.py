@@ -11,8 +11,7 @@ from kivy.uix.camera import Camera
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.properties import ObjectProperty
 from kivy.core.window import Window
-import cv2
-from datetime import time
+from datetime import datetime
 
 import pandas as pd
 
@@ -76,16 +75,31 @@ class WindowManager(ScreenManager):
 class CamWin(Screen):
     def __init__(self, **kwargs):
         super(CamWin, self).__init__(**kwargs)
-    
+
     def activate_camera(self):
+        self.clear_widgets()
         self.add_widget(CamClick())
     
 
 class CamClick(BoxLayout):
-    def picture_taken(self):
+    def __init__(self, **kwargs):
+        super(CamClick, self).__init__(**kwargs)
+    def capture(self):
         #replace with correct plant
         curr_plant = "daisy"
+        
+        camera = self.ids['camera']
+        camera.export_to_png("user_image.png")
+        camera.play = False
+        print("Captured")
 
+        #Call model with user_image.png
+        identify_plant("user_image.png")
+
+def identify_plant(image_path):
+
+    curr_plant = "daisy"
+    print(curr_plant)
 
 
 class Plant(BoxLayout):
@@ -138,7 +152,6 @@ class MyApp(App):
         kwargs = {"common_name":curr_plant, "sci_name":row[0], "info":row[1], "water":row[2]}
         new_plant = Plant(**kwargs)
         my_coll.append(new_plant)
-
 
 
 if __name__ == "__main__":
