@@ -46,13 +46,13 @@ class CollectionWindow(Screen):
             plt = BoxLayout(orientation = "horizontal", padding = [self.width * 0.02, self.height * 0.02, self.width * 0.02, self.height * 0.02])
             img = Image(source = "pics/" + plant.common_name + ".jpg", size_hint = (0.15, 0.9), pos_hint = {"x": 0.05, "top": 0.9})
             plt.add_widget(img)
-            com_name = Label(text = plant.common_name, size_hint = (0.10, 0.9), pos_hint = {"top": 0.95})
+            com_name = Label(text = plant.common_name, size_hint = (0.10, 0.9), pos_hint = {"top": 0.95}, font_size = 12)
             plt.add_widget(com_name)
-            sci_name = Label(text = plant.sci_name, size_hint = (0.15, 0.9), pos_hint = {"top": 0.95})
+            sci_name = Label(text = plant.sci_name, size_hint = (0.15, 0.9), pos_hint = {"top": 0.95}, font_size = 12)
             plt.add_widget(sci_name)
-            info = Label(text = plant.info, size_hint = (0.4, 0.9), pos_hint = {"top": 0.95}, text_size = (250, 75), font_size = 10)
+            info = Label(text = plant.info, size_hint = (0.4, 0.9), pos_hint = {"top": 0.95}, text_size = (250, 75), font_size = 8)
             plt.add_widget(info)
-            water = Label(text = plant.water, size_hint = (0.20, 0.9), pos_hint = {"top": 0.95})
+            water = Label(text = plant.water, size_hint = (0.20, 0.9), pos_hint = {"top": 0.95}, font_size = 12)
             plt.add_widget(water)
             my_collec.add_widget(plt)
             
@@ -127,9 +127,9 @@ kv = Builder.load_file("my.kv")
 
 
 
-
 class MyApp(App):
     def build(self):
+        # self.add_to_collection()
         return kv
     def add_to_collection(self):
         if not df.index.name == "common name":
