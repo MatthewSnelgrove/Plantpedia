@@ -1,0 +1,133 @@
+#:kivy 2.0.0
+
+WindowManager:
+    my_collection: my_collection
+
+    MainWindow:
+    CollectionWindow:
+        id: my_collection
+    NewPlantWindow:
+
+<MainWindow>:
+    name: "main"
+
+    RelativeLayout:
+        Button:
+            text: "My Collection"
+            size_hint: 0.6, 0.5
+            pos_hint: {"x": 0.2, "top": 0.9}
+            on_release:
+                app.root.current = "collection"
+                root.manager.transition.direction = "left"
+
+        Button:
+            text: "New Plant"
+            size_hint: 0.6, 0.2
+            pos_hint: {"x": 0.2, "top": 0.3}
+            on_release:
+                app.root.current = "new_plant"
+                root.manager.transition.direction = "left"
+
+
+<CollectionWindow>:
+    name: "collection"
+
+    canvas.before:
+        Color:
+            rgba: 1,1,1,1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    RelativeLayout:
+
+        Button:
+            text: "Update"
+            size_hint: 0.35, 0.10
+            pos_hint: {"x": 0.1, "top": 0.15}
+            on_press: root.update_plants()
+        Button:
+            text: "Back"
+            size_hint: 0.35, 0.10
+            pos_hint: {"x": 0.55, "top": 0.15}
+            on_press:
+                app.root.current = "main"
+                root.manager.transition.direction = "right"
+
+
+<NewPlantWindow>:
+    name: "new_plant"
+
+
+    RelativeLayout:
+
+        Button:
+            text: "Add to collection and go back"
+            size_hint: 0.5, 0.5
+            pos_hint: {"x": 0.25, "top": 0.75}
+            on_press:
+                app.add_to_collection("daisy")
+                app.root.current = "main"
+                root.manager.transition.direction = "right"
+
+<MyCollection>:
+    name: "my_collection"
+    id: my_collection
+    size_hint: 0.9, 0.75
+    pos_hint: {"x": 0.05, "top": 0.95}
+
+    orientation: "vertical"
+
+    canvas.before:
+        Color:
+            rgba: 0,0.2,1,1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+            
+        
+
+<Plant>:
+    img_src: img_src
+    common_name: common_name
+    sci_name: sci_name
+    info: info
+    water: water
+
+    orientation: "horizontal"
+    padding: [root.width * 0.02, root.height * 0.02, root.width * 0.02, root.height * 0.02]
+
+    canvas.before:
+        Color:
+            rgba: 1,0,1,1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    Image:
+        # source: "daisy.jfif"
+        id: img_src
+        size_hint: 0.15, 0.9
+        pos_hint: {"x": 0.05, "top": 0.9}
+    Label:
+        id: common_name
+        text: "aaa"
+        size_hint: 0.10, 0.9
+        pos_hint: {"top": 1.2}
+        text_size: self.size
+    Label:
+        id: sci_name
+        size_hint: 0.15, 0.9
+        pos_hint: {"top": 1.2}
+        text_size: self.size
+    Label:
+        id: info
+        size_hint: 0.4, 0.9
+        pos_hint: {"top": 1.2}
+        text_size: self.size
+    Label:
+        id: water
+        size_hint: 0.2, 0.9
+        pos_hint: {"top": 1.2}
+        text_size: self.size
