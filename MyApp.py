@@ -13,6 +13,11 @@ from kivy.properties import ObjectProperty
 from kivy.core.window import Window
 from datetime import datetime
 
+import json
+import numpy as np
+from PIL import Image
+import tensorflow as tf
+
 import pandas as pd
 
 df = pd.read_csv('plant_info.csv')
@@ -96,9 +101,35 @@ class CamClick(BoxLayout):
         #Call model with user_image.png
         identify_plant("user_image.png")
 
+def process_image(img):
+    image = np.squeeze(img)
+    image = tf.image.resize(image, (IMAGE_RES, IMAGE_RES)) / 255.0
+    return image
+        
 def identify_plant(image_path):
+    interpreter = tf.lite.Interpreter(model_path='model_quant_tl.tflite')
+    interpreter.allocate_tensors()
+    input_details = interpreter.get_input_details()
+    output_details = interpreter.get_output_details()
+    image = Image.open(image_path)
+    image = process_image(image)
+    
+    input_shape = input_details[0]['shape']
+    input_tensor = np.array(np.expand_dims(image,0), dtype=np.float32)
 
-    curr_plant = "daisy"
+    input_index = interpreter.get_input_details()[0]["index"]
+    interpreter.set_tensor(input_index, input_tensor)
+
+    interpreter.invoke()
+    output_details = interpreter.get_output_details()
+    output_data = interpreter.get_tensor(output_details[0]['index'])
+    probabilities = np.array(output_data[0])
+    
+    label_probs = []
+    for i, probability in enumerate(probabilities):
+        label_probs.append([class_names[str(i + 1)], float(probability)])
+    
+    curr_plant = sorted(label_probs, key=lambda element: element[1])[-1][0]
     print(curr_plant)
 
 
