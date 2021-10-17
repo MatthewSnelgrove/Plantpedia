@@ -11,6 +11,13 @@ WindowManager:
 <MainWindow>:
     name: "main"
 
+    canvas.before:
+        Color:
+            rgba: 0.1,1,0.1,1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
     RelativeLayout:
         Button:
             text: "My Collection"
@@ -34,7 +41,7 @@ WindowManager:
 
     canvas.before:
         Color:
-            rgba: 1,1,1,1
+            rgba: 0.5,1,0.5,1
         Rectangle:
             pos: self.pos
             size: self.size
@@ -58,15 +65,27 @@ WindowManager:
 <NewPlantWindow>:
     name: "new_plant"
 
+    canvas.before:
+        Color:
+            rgba: 0.4,0.7,1,1
+        Rectangle:
+            pos: self.pos
+            size: self.size
 
     RelativeLayout:
 
         Button:
-            text: "Add to collection and go back"
-            size_hint: 0.5, 0.5
-            pos_hint: {"x": 0.25, "top": 0.75}
+            text: "Add to collection"
+            size_hint: 0.3, 0.5
+            pos_hint: {"x": 0.1, "top": 0.75}
             on_press:
+                #REPLACE DAISY WITH NAME OF PLANT FROM MODEL
                 app.add_to_collection("daisy")
+        Button:
+            text: "Back"
+            size_hint: 0.3, 0.5
+            pos_hint: {"x": 0.6, "top": 0.75}
+            on_press:
                 app.root.current = "main"
                 root.manager.transition.direction = "right"
 
@@ -80,7 +99,7 @@ WindowManager:
 
     canvas.before:
         Color:
-            rgba: 0,0.2,1,1
+            rgba: 0,0.8,0,1
         Rectangle:
             pos: self.pos
             size: self.size

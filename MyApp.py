@@ -39,7 +39,7 @@ class CollectionWindow(Screen):
         my_collec = MyCollection()
         for plant in my_coll:
             plt = BoxLayout(orientation = "horizontal", padding = [self.width * 0.02, self.height * 0.02, self.width * 0.02, self.height * 0.02])
-            img = Image(source = "pics/" + plant.common_name + ".png", size_hint = (0.15, 0.9), pos_hint = {"x": 0.05, "top": 0.9})
+            img = Image(source = "pics/" + plant.common_name + ".jpg", size_hint = (0.15, 0.9), pos_hint = {"x": 0.05, "top": 0.9})
             plt.add_widget(img)
             com_name = Label(text = plant.common_name, size_hint = (0.10, 0.9), pos_hint = {"top": 0.95})
             plt.add_widget(com_name)
