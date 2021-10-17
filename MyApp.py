@@ -107,7 +107,11 @@ def process_image(img):
     image = np.squeeze(img)
     image = tf.image.resize(image, (IMAGE_RES, IMAGE_RES)) / 255.0
     return image
-        
+
+def load_json_data(json_path):
+    with open(json_path, 'r') as f:
+        return json.load(f)
+
 def identify_plant(image_path):
     interpreter = tf.lite.Interpreter(model_path='model_quant_tl.tflite')
     interpreter.allocate_tensors()
@@ -126,6 +130,8 @@ def identify_plant(image_path):
     output_details = interpreter.get_output_details()
     output_data = interpreter.get_tensor(output_details[0]['index'])
     probabilities = np.array(output_data[0])
+    
+    class_names = load_json_data('label_map.json')
     
     label_probs = []
     for i, probability in enumerate(probabilities):
