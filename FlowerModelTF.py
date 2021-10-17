@@ -182,29 +182,3 @@ def test_model():
     model = load_model(MODEL_NAME)
     vis_predictions(model)
 
-interpreter = tf.lite.Interpreter(model_path='model_quant_tl.tflite')
-interpreter.allocate_tensors()
-input_details = interpreter.get_input_details()
-output_details = interpreter.get_output_details()
-image = Image.open(r"C:\Users\Victor\Desktop\trial-images\Oxeye-daisy-flower_3859338724_o.jpg")
-image = process_image(image)
-input_shape = input_details[0]['shape']
-input_tensor = np.array(np.expand_dims(image,0), dtype=np.float32)
-#set the tensor to point to the input data to be inferred
-input_index = interpreter.get_input_details()[0]["index"]
-interpreter.set_tensor(input_index, input_tensor)
-#Run the inference
-interpreter.invoke()
-output_details = interpreter.get_output_details()
-output_data = interpreter.get_tensor(output_details[0]['index'])
-probabilities = np.array(output_data[0])
-
-#results = np.squeeze(output_data)
-#top_k = results.argsort()
-
-print(output_data)
-label_probs = []
-class_names = load_json_data(r"C:\Users\Victor\Desktop\MachineLearning\Datasets\flowers\label_map.json")
-for i, probability in enumerate(probabilities):
-    label_probs.append([class_names[str(i + 1)], float(probability)])
-print(sorted(label_probs, key=lambda element: element[1])[-1])
